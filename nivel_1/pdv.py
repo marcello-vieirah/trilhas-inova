@@ -1,6 +1,11 @@
+from pathlib import Path
+
+arquivo_resumo = Path(__file__).resolve().parent / "resumo.txt"
 lista_compras = []
+teve_desconto = False
 total_bruto = 0
 qtd_descontos = 0
+
 
 while True:
     print("\n-=-=-=-=-=--=- Digite 0 para encerrar -=-=-=-=-=--=-")
@@ -33,23 +38,30 @@ while True:
     print()
     if idade_cliente >= 65:
         valor_compra *= 0.80
+        teve_desconto = True
         qtd_descontos += 1
         print(f"desconto de 20% aplicado.")
 
     if valor_compra > 100:
         valor_compra *= 0.90
+        teve_desconto = True
         qtd_descontos += 1
         print(f"desconto de 10% aplicado.")
 
     if qtd_itens > 3:
         valor_compra *= 0.95
+        teve_desconto = True
         qtd_descontos += 1
         print(f"desconto de 5% aplicado.")
 
     if cupom == "FIDELIDADE10":
         valor_compra *= 0.90
+        teve_desconto = True
         qtd_descontos += 1
         print(f"desconto de fidelidade de 10% aplicado.")
+
+    if teve_desconto:
+        print(f"\nValor atualizado: R${valor_compra:,.2f}")
 
     lista_compras.append(valor_compra)
 
@@ -65,7 +77,7 @@ print(f"Total bruto: R$ {total_bruto:,.2f}")
 print(f"Descontos concedidos: (qtd) {qtd_descontos} | (R$) {valor_desconto:,.2f}")
 print(f"Total final: R$ {total_final:,.2f}")
 
-with open("resumo.txt", "w", encoding="utf-8") as file:
+with open(arquivo_resumo, "w", encoding="utf-8") as file:
     file.write("HISTÓRICO DE COMPRAS\n\n")
 
     for i, compra in enumerate(lista_compras, start=1):
@@ -80,4 +92,4 @@ with open("resumo.txt", "w", encoding="utf-8") as file:
     )
     file.write(f"Total final: R$ {total_final:,.2f}\n")
 
-print("\nResultados salvos em 'resumo.txt'.")
+print(f"\nResumo salvo em: {arquivo_resumo}.")
